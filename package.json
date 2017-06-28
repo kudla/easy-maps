@@ -1,5 +1,5 @@
 {
-  "name": "npm-package-template",
+  "name": "easy-maps",
   "version": "0.0.0",
   "description": "",
   "main": "dist",
@@ -9,20 +9,19 @@
     "build:tests": "babel test/specs --out-dir test/dist",
     "build": "npm run build:source && npm run build:tests",
     "patch": "npm run eslint && npm run build && npm test && npm version patch",
-    "rename": "node rename",
     "test": "node node_modules/mocha/bin/mocha --reporter spec test/dist/*"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kudla/npm-package-template.git"
+    "url": "git+https://github.com/kudla/easy-maps.git"
   },
-  "keywords": ["npm", "package", "template"],
+  "keywords": [],
   "author": "Artem Kudla <a.v.xdev@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kudla/npm-package-template/issues"
+    "url": "https://github.com/kudla/easy-maps/issues"
   },
-  "homepage": "https://github.com/kudla/npm-package-template#readme",
+  "homepage": "https://github.com/kudla/easy-maps#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",

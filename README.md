@@ -1,1 +1,1 @@
-# npm-package-template
+# easy-maps
