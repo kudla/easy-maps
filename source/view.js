@@ -8,12 +8,14 @@ export class EasyView {
     }
     mountSource(source) {
         this.sources.push(source);
+        this.updateProps();
     }
     unmountSource(source) {
         let {sources} = this;
         let index = sources.indexOf(source);
         if (index !== -1) {
             sources.splice(index, 1);
+            this.updateProps();
         }
     }
     calcProps() {
@@ -23,6 +25,9 @@ export class EasyView {
     }
     updateProps() {
         let {updateProp} = this;
+        if (!this.map.isMounted) {
+            return;
+        }
         let props = this.calcProps();
         props = map(props, (state, propName) => ({state, propName}));
         sortBy(props, ({state}) => state.transition || 0)
@@ -43,15 +48,15 @@ export class EasyView {
     };
     set zoom(valueIgnored) {
         let {constructor:{name}} = this;
-        throw new Error(`Implement zoom setter for ${name}`);
+        throw new Error(`Non implemented zoom setter for ${name}`);
     }
     set center(valueIgnored) {
         let {constructor:{name}} = this;
-        throw new Error(`Implement center setter for ${name}`);
+        throw new Error(`Non implemented center setter for ${name}`);
     }
     set rotation(valueIgnored) {
         let {constructor:{name}} = this;
-        throw new Error(`Implement rotation setter for ${name}`);
+        throw new Error(`Non implemented rotation setter for ${name}`);
     }
 }
 
@@ -73,7 +78,12 @@ function extractProps(source) {
 const viewProps = {
     zoom: transitionableProperty('zoom', value => value && Number(value)),
     rotation: transitionableProperty('rotation', value => value && Number(value)),
-    center: transitionableProperty('center', value => value && value.map(Number))
+    center: transitionableProperty('center', value => {
+        if (typeof value === 'string') {
+            value = value.split(/\s*,\s*/);
+        }
+        return value && value.map(Number);
+    })
 };
 
 function transitionableProperty(name, prepareValue) {
