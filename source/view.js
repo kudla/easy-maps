@@ -1,14 +1,15 @@
-import {map, isEqual, sortBy} from 'lodash';
+import {map, isEqual, sortBy, debounce} from 'lodash';
 
 export class EasyView {
     constructor(map) {
         this.map = map;
         this.sources = [];
         this.props = {};
+        this.mutateProps = debounce(this.updateProps, 1);
     }
     mountSource(source) {
         this.sources.push(source);
-        this.updateProps();
+        this.mutateProps();
     }
     unmountSource(source) {
         let {sources} = this;
@@ -23,11 +24,8 @@ export class EasyView {
         let props = sources.map(extractProps);
         return Object.assign({}, ...props);
     }
-    updateProps() {
+    updateProps = () => {
         let {updateProp} = this;
-        if (!this.map.isMounted) {
-            return;
-        }
         let props = this.calcProps();
         props = map(props, (state, propName) => ({state, propName}));
         sortBy(props, ({state}) => state.transition || 0)
